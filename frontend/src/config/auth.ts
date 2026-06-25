@@ -1,0 +1,4 @@
+export const PORTFOLIO_TOKEN_KEY = "portfolio_token";
+export const PORTFOLIO_TOKEN_COOKIE = PORTFOLIO_TOKEN_KEY;
+export const PORTFOLIO_TOKEN_LOCAL_STORAGE_KEY = PORTFOLIO_TOKEN_KEY;
+export const PORTFOLIO_TOKEN_MAX_AGE = 7200; // 2 hours

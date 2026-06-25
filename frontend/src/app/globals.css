@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply min-h-screen bg-slate-950 text-slate-100 antialiased;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: #2563eb;
+  color: white;
+}
+
+/* From Uiverse.io by kennyotsu-monochromia */
+.pattern-light {
+  width: 100%;
+  height: 100%;
+  --color: oklch(86.9% 0.005 56.366);
+  background-color: oklch(98.5% 0.001 106.423);
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    );
+
+  background-size: 15px 15px;
+}
+
+.pattern-dark {
+  width: 100%;
+  height: 100%;
+  --color: oklch(37% 0.013 285.805);
+  background-color: oklch(14.1% 0.005 285.823);
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      135deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    );
+
+  background-size: 15px 15px;
+}
+
+.bg-size-1 {
+  background-size: 15px 15px;
+}
+
+.inner-glow-box {
+  width: 300px;
+  height: 200px;
+  background-color: #222;
+
+  /* inset | horizontal | vertical | blur | spread | color */
+  box-shadow: inset 0 0 20px 5px #00ffff;
+}
+
+/* Terminal cursor blink animation */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+/* TERMINAL SCROLLBAR */
+/* Terminal scrollbar container */
+.terminal-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Terminal scrollbar track */
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Terminal scrollbar thumb */
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08); /* Transparent white */
+  border-radius: 9999px; /* Rounded corners */
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle glow on the edge of the scroll */
+  backdrop-filter: blur(2px);
+}
+
+/* Scroll buttons */
+.terminal-scroll::-webkit-scrollbar-button,
+.terminal-scroll::before,
+.terminal-scroll::after {
+  display: none !important;
+  width: 0;
+  height: 0;
+}
+
+/* Scroll hover */
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 186, 197, 0.9) !important;
+  border: 1px solid rgba(197, 173, 34, 0.3);
+}
+
+/* Firefox support */
+.terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+}

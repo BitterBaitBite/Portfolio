@@ -1,0 +1,105 @@
+import { About, Project, Tag } from "@/types";
+import { buildUrl, fetcher } from "@/lib/api";
+
+function authHeaders(token: string) {
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+}
+
+export async function validateSession(token: string) {
+  return fetcher<{
+    authenticated: boolean;
+    user: { id: string; email: string; role: string };
+  }>(buildUrl("/auth/validate"), {
+    method: "GET",
+    headers: authHeaders(token),
+  });
+}
+
+export async function createProject(
+  token: string,
+  project: Partial<Project> & { tagIds?: string[] },
+) {
+  return fetcher<Project>(buildUrl("/projects"), {
+    method: "POST",
+    headers: {
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(project),
+  });
+}
+
+export async function updateProject(
+  token: string,
+  id: string,
+  project: Partial<Project> & { tagIds?: string[] },
+) {
+  return fetcher<Project>(buildUrl(`/projects/${id}`), {
+    method: "PUT",
+    headers: {
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(project),
+  });
+}
+
+export async function deleteProject(token: string, id: string) {
+  return fetcher<{ id: string }>(buildUrl(`/projects/${id}`), {
+    method: "DELETE",
+    headers: {
+      ...authHeaders(token),
+    },
+  });
+}
+
+export async function createTag(
+  token: string,
+  name: string,
+  category: Tag["category"],
+) {
+  return fetcher<Tag>(buildUrl("/tags"), {
+    method: "POST",
+    headers: {
+      ...authHeaders(token),
+    },
+    body: JSON.stringify({ name, category }),
+  });
+}
+
+export async function updateTag(
+  token: string,
+  id: string,
+  name?: string,
+  category?: Tag["category"],
+) {
+  return fetcher<Tag>(buildUrl(`/tags/${id}`), {
+    method: "PUT",
+    headers: {
+      ...authHeaders(token),
+    },
+    body: JSON.stringify({ name, category }),
+  });
+}
+
+export async function deleteTag(token: string, id: string) {
+  return fetcher<{ id: string }>(buildUrl(`/tags/${id}`), {
+    method: "DELETE",
+    headers: {
+      ...authHeaders(token),
+    },
+  });
+}
+
+export async function upsertAbout(
+  token: string,
+  about: Partial<About> & { id?: string },
+) {
+  return fetcher<About>(buildUrl("/about/upsert"), {
+    method: "PATCH",
+    headers: {
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(about),
+  });
+}
