@@ -27,7 +27,9 @@ export default function TerminalModern() {
         <span className="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
         <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
         <span className="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
-        <span className="ml-2 text-[10px]">bash - guest@portfolio</span>
+        <span className="ml-2 text-[10px]">
+          bash - guillermo.concepcion@portfolio
+        </span>
       </div>
 
       {/* Historial de comandos */}

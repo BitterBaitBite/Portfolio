@@ -16,7 +16,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           ) : null}
         </div>
         <Link
-          href={`/proyectos/${project.id}`}
+          href={`/projects/${project.id}`}
           className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:border-slate-500 hover:text-white"
         >
           Ver

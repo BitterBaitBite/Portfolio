@@ -9,6 +9,7 @@ export class ProjectsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateProjectDto) {
+    console.log(dto);
     return this.prisma.project.create({
       data: {
         title: dto.title,

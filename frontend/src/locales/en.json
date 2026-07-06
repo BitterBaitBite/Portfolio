@@ -1,0 +1,10 @@
+{
+  "common": {
+    "accept": "Accept",
+    "cancel": "Cancel"
+  },
+  "home": {
+    "title": "Welcome to our application",
+    "subtitle": "The best platform to manage your projects."
+  }
+}

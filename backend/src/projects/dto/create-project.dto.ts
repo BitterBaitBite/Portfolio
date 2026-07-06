@@ -3,9 +3,10 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUrl,
   ArrayUnique,
+  IsUrl,
 } from "class-validator";
+import { IsUrlFlexible } from "../../common/decorators/is-url-flexible.decorator";
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -25,15 +26,15 @@ export class CreateProjectDto {
   description!: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   url?: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   thumbnail?: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsUrl({ require_tld: false })
   image?: string;
 
   @IsOptional()
