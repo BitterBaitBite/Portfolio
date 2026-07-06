@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import {
-  DASHBOARD_ROUTE,
-  DASHBOARD_MATCHER,
-  LOGIN_ROUTE,
-  isDashboardPath,
-} from "@/config/routes";
+import { DASHBOARD_ROUTE, LOGIN_ROUTE, isDashboardPath } from "@/config/routes";
 import { PORTFOLIO_TOKEN_COOKIE } from "@/config/auth";
 
 export function middleware(req: NextRequest) {
@@ -26,5 +21,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: DASHBOARD_MATCHER,
+  matcher: ["/dashboard/:path*"],
 };
