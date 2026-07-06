@@ -36,6 +36,7 @@ export class ProjectsController {
   @Roles(UserRole.ADMIN)
   @Post()
   create(@Body() dto: CreateProjectDto) {
+    console.log(dto);
     return this.projectsService.create(dto);
   }
 

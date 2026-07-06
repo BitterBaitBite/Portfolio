@@ -84,15 +84,25 @@ export function ProjectAdmin({
 
     try {
       setStatus("Guardando...");
+
+      const payload = {
+        ...projectForm,
+        url: projectForm.url || undefined,
+        thumbnail: projectForm.thumbnail || undefined,
+        image: projectForm.image || undefined,
+      };
+
       if (selectedProjectId) {
-        await updateProject(token, selectedProjectId, projectForm);
+        await updateProject(token, selectedProjectId, payload);
         setStatus("Proyecto actualizado correctamente.");
       } else {
-        await createProject(token, projectForm);
+        await createProject(token, payload);
         setStatus("Proyecto creado correctamente.");
       }
+
       setSelectedProjectId("");
       setProjectForm(emptyProject);
+
       onRefresh();
     } catch (error) {
       setStatus(`Error al guardar: ${error}`);

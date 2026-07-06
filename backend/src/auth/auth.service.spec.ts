@@ -3,6 +3,7 @@ import { AuthService } from "./auth.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
+import { LoginDto } from "./dto/login.dto";
 
 describe("AuthService", () => {
   let service: AuthService;
@@ -47,7 +48,7 @@ describe("AuthService", () => {
         email,
         username: "testuser",
         password: hashedPassword,
-        role: "admin",
+        role: "ADMIN",
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -55,13 +56,16 @@ describe("AuthService", () => {
       // Mock JWT sign
       jest.spyOn(jwtService, "sign").mockReturnValue("mocked_token");
 
-      const result = await service.login(email, password);
+      const result = await service.login({ email, password } as LoginDto);
 
-      expect(result).toEqual({ accessToken: "mocked_token" });
+      expect(result).toEqual({
+        accessToken: "mocked_token",
+        user: { id: "1", email: "test@example.com", role: "ADMIN" },
+      });
       expect(jwtService.sign).toHaveBeenCalledWith({
         email,
         sub: "1",
-        role: "admin",
+        role: "ADMIN",
       });
     });
 
@@ -71,9 +75,9 @@ describe("AuthService", () => {
 
       jest.spyOn(prismaService.user, "findUnique").mockResolvedValue(null);
 
-      await expect(service.login(email, password)).rejects.toThrow(
-        "Invalid credentials",
-      );
+      await expect(
+        service.login({ email, password } as LoginDto),
+      ).rejects.toThrow("Invalid credentials");
     });
   });
 });

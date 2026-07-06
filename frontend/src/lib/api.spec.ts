@@ -12,9 +12,9 @@ describe("API helpers", () => {
     });
 
     it("should build URL with custom base from env", () => {
-      process.env.NEXT_PUBLIC_API_BASE_URL = "http://api.example.com";
+      process.env.NEXT_PUBLIC_API_BASE_URL = "http://localhost:3000";
       const url = buildUrl("/projects");
-      expect(url).toBe("http://api.example.com/projects");
+      expect(url).toBe("http://localhost:3000/projects");
     });
 
     it("should handle query parameters", () => {

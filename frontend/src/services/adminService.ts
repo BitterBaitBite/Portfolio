@@ -35,6 +35,8 @@ export async function updateProject(
   id: string,
   project: Partial<Project> & { tagIds?: string[] },
 ) {
+  console.log(project);
+
   return fetcher<Project>(buildUrl(`/projects/${id}`), {
     method: "PUT",
     headers: {

@@ -60,6 +60,7 @@ export default function DashboardPage() {
         getTags(),
         getAbout(),
       ]);
+
       setProjects(projectList);
       setTags(tagList);
       setAbout(aboutData);
@@ -110,11 +111,13 @@ export default function DashboardPage() {
             <h1 className="text-3xl font-semibold text-white">
               Admin Dashboard
             </h1>
+
             <p className="mt-2 text-slate-400">
               Gestiona proyectos, etiquetas y el contenido About de tu
               portfolio.
             </p>
           </div>
+
           <button
             type="button"
             onClick={handleLogout}
@@ -123,6 +126,7 @@ export default function DashboardPage() {
             Cerrar sesión
           </button>
         </div>
+
         {error ? <p className="text-sm text-rose-400">{error}</p> : null}
       </div>
 
@@ -134,8 +138,10 @@ export default function DashboardPage() {
             tags={tags}
             onRefresh={loadAdminData}
           />
+
           <AboutAdmin token={token} about={about} onRefresh={loadAdminData} />
         </div>
+
         <TagAdmin token={token} tags={tags} onRefresh={loadAdminData} />
       </div>
     </section>
