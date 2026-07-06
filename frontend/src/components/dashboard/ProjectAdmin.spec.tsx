@@ -1,8 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { ProjectAdmin } from "./ProjectAdmin";
+import { Project, Tag } from "@/types";
 
 const mockToken = "test_token";
-const mockProjects = [
+const mockProjects: Project[] = [
   {
     id: "1",
     title: "Test Project",
@@ -15,8 +16,7 @@ const mockProjects = [
     tags: [],
   },
 ];
-
-const mockTags = [
+const mockTags: Tag[] = [
   {
     id: "tag1",
     name: "React",
@@ -50,7 +50,11 @@ describe("ProjectAdmin", () => {
       />,
     );
 
-    expect(screen.getByDisplayValue("Test Project")).toBeInTheDocument();
+    const selectDropdown = screen.getByRole("combobox");
+    expect(selectDropdown).toBeInTheDocument();
+
+    const { getByText } = within(selectDropdown);
+    expect(getByText("Test Project")).toBeInTheDocument();
   });
 
   it("should show create new option in dropdown", () => {
@@ -63,9 +67,11 @@ describe("ProjectAdmin", () => {
       />,
     );
 
-    expect(
-      screen.getByDisplayValue("Crear proyecto nuevo"),
-    ).toBeInTheDocument();
+    const selectDropdown = screen.getByRole("combobox");
+    expect(selectDropdown).toBeInTheDocument();
+
+    const { getByText } = within(selectDropdown);
+    expect(getByText("Crear proyecto nuevo")).toBeInTheDocument();
   });
 
   it("should render input fields", () => {
