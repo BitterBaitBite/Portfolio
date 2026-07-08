@@ -1,5 +1,6 @@
 "use client";
 
+import { ProjectFilterProps } from "@/components/projects/ProjectFilters";
 import { useMemo, useState } from "react";
 
 export function useProjectFilters(initialTags: string[] = []) {
@@ -42,7 +43,7 @@ export function useProjectFilters(initialTags: string[] = []) {
     setTitle,
     subtitle,
     setSubtitle,
-    tags,
+    activeTags: tags,
     toggleTag,
     resetFilters,
     queryString,
