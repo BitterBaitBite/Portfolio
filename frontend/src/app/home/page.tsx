@@ -1,59 +1,100 @@
-export default function HomePage() {
+import GithubIcon from "@/components/svg/GithubIcon";
+import { getRepos } from "@/services/githubService";
+import { Repo } from "@/types";
+import Link from "next/dist/client/link";
+
+export default async function HomePage() {
+  const repos = await getRepos({ per_page: "5", sort: "updated" });
+
   return (
-    // <section className="mx-auto max-w-6xl space-y-8 py-10">
-    //   <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-10 shadow-glow">
-    //     <p className="mb-4 text-sm uppercase tracking-[0.35em] text-sky-400">
-    //       Professional portfolio
-    //     </p>
+    <section
+      className={[
+        "flex flex-col gap-2 sm:gap-4 md:flex-row md:gap-6",
+        "px-4 py-2 sm:p-6 lg:p-8",
+      ].join(" ")}
+    >
+      <div
+        className={[
+          "flex flex-col gap-2 flex-1",
+          "md:flex-1/2",
+          "rounded-sm border border-slate-700 bg-slate-950/20",
+          "px-2 py-1 sm:px-4 sm:py-2 lg:px-6 lg:py-4",
+        ].join(" ")}
+      >
+        <h2 className="text-2xl font-semibold text-slate-300">Projects</h2>
 
-    //     <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-    //       Build your digital brand with clean code and modern architecture.
-    //     </h1>
+        <p className="text-slate-300 text-sm">
+          Take a look at some of my recent projects. You can filter them by
+          title, subtitle, and tags to find what interests you the most.
+        </p>
 
-    //     <p className="mt-6 max-w-3xl text-slate-300">
-    //       This portfolio scaffold connects a TypeScript NestJS backend with a
-    //       Next.js frontend and includes projects, tags, about content, and an
-    //       admin dashboard for secure content management.
-    //     </p>
+        <Link
+          href="/projects"
+          className="mt-2 inline-block rounded-sm bg-blue-500 px-4 py-2 text-slate-300 hover:bg-blue-600"
+        >
+          View All Projects
+        </Link>
+      </div>
 
-    //     <div className="mt-8 flex flex-wrap gap-4">
-    //       <a
-    //         href="/projects"
-    //         className="inline-flex items-center justify-center rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-sky-400"
-    //       >
-    //         Ver proyectos
-    //       </a>
+      <div
+        className={[
+          "flex flex-col gap-4 flex-1",
+          "md:flex-1/2",
+          "rounded-sm border border-slate-700 bg-slate-950/20 p-4",
+        ].join(" ")}
+      >
+        <h2 className="text-2xl font-semibold text-slate-300">Github</h2>
 
-    //       <a
-    //         href="/login"
-    //         className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-3 text-sm text-slate-200 transition hover:border-slate-500 hover:text-white"
-    //       >
-    //         Admin login
-    //       </a>
-    //     </div>
-    //   </div>
+        <ul className="flex flex-col gap-2">
+          {repos?.map((repo: Repo) => (
+            <li
+              key={repo.id}
+              className={[
+                "flex flex-col gap-2",
+                "bg-slate-800/20 p-4 rounded-sm",
+              ].join(" ")}
+            >
+              <h3 className="text-lg">{repo.name}</h3>
 
-    //   <div className="grid gap-6 lg:grid-cols-2">
-    //     <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-glow">
-    //       <h2 className="text-2xl font-semibold text-white">Frontend</h2>
-    //       <p className="mt-4 text-slate-300">
-    //         Next.js App Router, TailwindCSS styling, and typed API services for
-    //         building a responsive portfolio.
-    //       </p>
-    //     </div>
+              {repo.description && (
+                <p className="text-gray-600 text-sm">{repo.description}</p>
+              )}
 
-    //     <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-glow">
-    //       <h2 className="text-2xl font-semibold text-white">Backend</h2>
+              {repo.topics.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {repo.topics.map((topic: string) => (
+                    <span
+                      key={topic}
+                      className="bg-blue-500/20 text-blue-500 px-2 py-1 rounded text-sm"
+                    >
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+              )}
 
-    //       <p className="mt-4 text-slate-300">
-    //         NestJS, Prisma, PostgreSQL, JWT auth, and a layered architecture for
-    //         secure content management.
-    //       </p>
-    //     </div>
-    //   </div>
-    // </section>
-    <section className="flex flex-row w-full">
-      <div className="bg-red-300 w-full"></div>
+              <div className="flex justify-between gap-2">
+                <Link
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-row items-center gap-2 text-slate-300 hover:underline"
+                >
+                  <div className="text-sm text-gray-500 flex items-center">
+                    <GithubIcon className="inline-block w-4 h-4" />
+                  </div>
+
+                  <span className="text-sm">Ver en GitHub</span>
+                </Link>
+
+                <span className="text-xs font-bold text-slate-900 py-1 px-3 bg-amber-500 rounded-full">
+                  {repo.language}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

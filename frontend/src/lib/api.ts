@@ -24,6 +24,30 @@ export function buildUrl(
   return url.toString();
 }
 
+export function buildExternalUrl(
+  path: string,
+  params?: Record<string, string | number | boolean | string[]>,
+) {
+  const url = new URL(
+    path.startsWith("https://") ? path : `${API_BASE_URL}/404`,
+  );
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null) {
+        return;
+      }
+      if (Array.isArray(value)) {
+        value.forEach((item) => url.searchParams.append(key, String(item)));
+        return;
+      }
+      url.searchParams.set(key, String(value));
+    });
+  }
+
+  return url.toString();
+}
+
 export async function fetcher<T>(
   input: RequestInfo,
   init?: RequestInit,

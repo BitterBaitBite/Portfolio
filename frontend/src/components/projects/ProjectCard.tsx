@@ -1,13 +1,21 @@
-import Link from "next/link";
 import { Project } from "@/types";
+import { useRouter } from "next/dist/client/components/navigation";
 
 interface ProjectCardProps {
   project: Project;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project }: ProjectCardProps) {
+  const router = useRouter();
   return (
-    <article className="group overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-glow transition hover:-translate-y-1 hover:border-slate-700">
+    <article
+      onClick={() => router.push(`/projects/${project.id}`)}
+      className={[
+        "group overflow-hidden",
+        "rounded-sm border border-slate-800 bg-slate-900/20 p-6",
+        "transition hover:-translate-y-1 hover:border-slate-600 hover:cursor-pointer",
+      ].join(" ")}
+    >
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-semibold text-white">{project.title}</h2>
@@ -15,14 +23,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
             <p className="text-sm text-slate-400">{project.subtitle}</p>
           ) : null}
         </div>
-        <Link
-          href={`/projects/${project.id}`}
-          className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 transition hover:border-slate-500 hover:text-white"
-        >
-          Ver
-        </Link>
       </div>
+
       <p className="text-slate-300">{project.brief}</p>
+
       <div className="mt-4 flex flex-wrap gap-2">
         {project.tags.map((tag) => (
           <span
