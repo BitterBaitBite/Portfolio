@@ -7,8 +7,7 @@ const navigation = [
   { href: "/home", label: "Home" },
   { href: "/projects", label: "Proyectos" },
   { href: "/about", label: "About" },
-  { href: "/login", label: "Login" },
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function Header() {
@@ -25,18 +24,18 @@ export function Header() {
         "border-b border-slate-800 pb-6",
         "md:flex-row md:items-center md:justify-between",
         // "bg-gradient-to-br from-white/[0.07] via-zinc-950/40 to-zinc-950/60",
-        "border border-zinc-700/30 rounded-lg",
+        "border border-zinc-700/30 rounded-t-xl",
         "font-mono text-xs text-green-400 overflow-y-auto",
         "shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] shadow-green-500/5",
         "backdrop-blur-sm",
       ].join(" ")}
     >
       <div>
-        <Link href="/home" className="text-2xl font-semibold text-white">
+        <Link href="/home" className="text-2xl font-semibold text-zinc-100">
           Guillermo Concepción
         </Link>
 
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-slate-400 select-none">
           A professional portfolio driven by Next.js and NestJS.
         </p>
       </div>

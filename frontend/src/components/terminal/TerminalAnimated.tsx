@@ -54,7 +54,7 @@ export default function TerminalAnimated() {
         "relative",
         "w-full h-48 px-4 pb-4 flex flex-col gap-1 md:px-6 lg:px-8",
         "bg-gradient-to-br from-white/[0.07] via-zinc-950/40 to-zinc-950/60",
-        "border border-zinc-700/30 rounded-lg",
+        "border border-zinc-700/30 rounded-b-xl",
         "font-mono text-xs text-green-400 overflow-y-auto",
         "shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] shadow-slate-500/5",
         "backdrop-blur-[2px]",
@@ -69,13 +69,14 @@ export default function TerminalAnimated() {
           "border-b border-zinc-900",
           "pb-2 -mx-4 px-4 md:mx-6 md:px-6 lg:-mx-8 lg:px-8",
           "text-zinc-500 select-none",
-          `transition-[background-color,bg-opacity] duration-500 ease-in-out ${scrolled ? "bg-zinc-950/95" : "bg-zinc-950/5"}`,
-          `transition-[margin,padding] duration-700 ease-in-out ${scrolled ? "pt-2 mt-2" : "pt-5 -mt-5"}`,
+          "transition-all duration-700 ease-in-out",
+          scrolled ? "bg-zinc-950/95" : "bg-zinc-950/5",
+          scrolled ? "pt-2 mt-2" : "pt-5 -mt-5",
         ].join(" ")}
       >
-        <span className="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
-        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
-        <span className="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+        <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 hover:bg-red-500/90 cursor-pointer active:bg-red-500/60"></span>
+        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 hover:bg-yellow-500/90 cursor-pointer active:bg-yellow-500/60"></span>
+        <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 hover:bg-green-500/90 cursor-pointer active:bg-green-500/60"></span>
         <span className="ml-2 text-[10px]">
           bash - guillermo.concepcion@portfolio
         </span>
@@ -147,12 +148,24 @@ export default function TerminalAnimated() {
                     break;
 
                   case "ls":
-                    // List the contents of the current directory if the command is "ls"
-                    pushCommand(
-                      "ls ~",
-                      ".\n..\nhome\nprojects\nabout\nlogin\ndashboard",
-                      CommandType.SYSTEM,
-                    );
+                    if (
+                      commandLine[1] === "-a" ||
+                      commandLine[1] === "-al" ||
+                      commandLine[1] === "-la"
+                    ) {
+                      pushCommand(
+                        inputValue + " ~",
+                        ".\n..\nabout\ncontact\ndocuments\nhome\nprojects\n.s3cr3t",
+                        CommandType.SYSTEM,
+                      );
+                    } else {
+                      // List the contents of the current directory if the command is "ls"
+                      pushCommand(
+                        "ls ~",
+                        ".\n..\nabout\ncontact\ndocuments\nhome\nprojects",
+                        CommandType.SYSTEM,
+                      );
+                    }
                     break;
 
                   case "pwd":
@@ -188,19 +201,26 @@ export default function TerminalAnimated() {
                       ".",
                       "..",
                       "/",
-                      "/home",
-                      "/projects",
-                      "/about",
-                      "/login",
-                      "/dashboard",
                       "home",
+                      "/home",
                       "projects",
+                      "/projects",
                       "about",
+                      "/about",
                       "login",
+                      "/login",
                       "dashboard",
+                      "/dashboard",
                     ];
 
-                    if (ALLOWED_PATHS.includes(newPath)) {
+                    if (newPath === "/.s3cr3t" || newPath === ".s3cr3t") {
+                      router.push("/.s3cr3t");
+                      pushCommand(
+                        inputValue,
+                        `Changed directory to: ${newPath}`,
+                        CommandType.SYSTEM,
+                      );
+                    } else if (ALLOWED_PATHS.includes(newPath)) {
                       router.push(newPath);
                       pushCommand(
                         inputValue,

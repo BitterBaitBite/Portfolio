@@ -1,0 +1,7 @@
+.next/* linguist-vendored
+.swc/* linguist-vendored
+dist/* linguist-vendored
+
+*.tsx linguist-detectable
+*.ts linguist-detectable
+*.js linguist-detectable

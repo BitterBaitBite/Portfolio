@@ -100,6 +100,7 @@ select {
     );
 
   background-size: 15px 15px;
+  background-attachment: fixed;
 }
 
 .bg-size-1 {

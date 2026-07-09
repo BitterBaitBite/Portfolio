@@ -19,7 +19,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen pattern-dark bg-size-[15px_15px] text-slate-100">
+      {/* <body className="min-h-screen pattern-dark bg-size-[15px_15px] text-slate-100"></body> */}
+      <body className="relative min-h-screen text-slate-100">
+        <div
+          className={[
+            "fixed top-0 inset-0 -z-50",
+            "pattern-dark",
+            "pointer-events-none",
+          ].join(" ")}
+        />
+
         <TerminalProvider>
           <Header />
 
@@ -27,7 +36,7 @@ export default function RootLayout({
 
           <main
             className={[
-              "mx-auto flex flex-col justify-center flex-1 px-4 py-6 sm:px-6 lg:px-8",
+              "mx-auto flex flex-col justify-center flex-1 px-6 py-4",
               "border border-zinc-700/30 rounded-lg",
               "font-mono text-xs text-green-400 overflow-y-auto",
               "shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] shadow-slate-500/5",
