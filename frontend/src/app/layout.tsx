@@ -2,8 +2,6 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { TerminalProvider } from "@/context/TerminalContext";
-import Terminal from "@/components/terminal/Terminal";
-import TerminalModern from "@/components/terminal/TerminalModern";
 import TerminalAnimated from "@/components/terminal/TerminalAnimated";
 
 export const metadata = {
@@ -36,7 +34,8 @@ export default function RootLayout({
 
           <main
             className={[
-              "mx-auto flex flex-col justify-center flex-1 px-6 py-4",
+              "flex flex-col flex-1",
+              "mx-auto px-6 py-4 min-h-screen",
               "border border-zinc-700/30 rounded-lg",
               "font-mono text-xs text-green-400 overflow-y-auto",
               "shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] shadow-slate-500/5",

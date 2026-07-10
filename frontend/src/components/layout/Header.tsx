@@ -7,6 +7,7 @@ const navigation = [
   { href: "/home", label: "Home" },
   { href: "/projects", label: "Proyectos" },
   { href: "/about", label: "About" },
+  { href: "/curriculum-vitae", label: "My CV" },
   { href: "/contact", label: "Contact" },
 ];
 

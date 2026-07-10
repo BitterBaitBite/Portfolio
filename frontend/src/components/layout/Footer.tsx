@@ -14,11 +14,13 @@ export function Footer() {
         "border-t border-slate-800 p-6 text-sm text-slate-500",
       ].join(" ")}
     >
-      <main>
-        <article>
-          <h2>Main links</h2>
+      <main className="flex flex-row gap-12 justify-center items-start">
+        <article className="flex flex-col min-w-36">
+          <h2 className="text-sm font-semibold uppercase py-1">Main links</h2>
 
-          <ul>
+          <hr className="border-zinc-700 my-2" />
+
+          <ul className="flex flex-col gap-1">
             <li>
               <Link href="/projects" aria-label="Projects">
                 Projects
@@ -32,6 +34,12 @@ export function Footer() {
             </li>
 
             <li>
+              <Link href="/curriculum-vitae" aria-label="My CV">
+                My CV
+              </Link>
+            </li>
+
+            <li>
               <Link href="/contact" aria-label="About me">
                 Contact
               </Link>
@@ -39,10 +47,14 @@ export function Footer() {
           </ul>
         </article>
 
-        <article>
-          <h2>Platform profiles</h2>
+        <article className="flex flex-col min-w-36">
+          <h2 className="text-sm font-semibold uppercase py-1">
+            Platform profiles
+          </h2>
 
-          <ul>
+          <hr className="border-zinc-700 my-2" />
+
+          <ul className="flex flex-col gap-1">
             <li>
               <Link href={githubUrl} aria-label="Github profile">
                 Github profile

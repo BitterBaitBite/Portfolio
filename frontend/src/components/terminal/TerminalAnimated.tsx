@@ -148,6 +148,9 @@ export default function TerminalAnimated() {
                     break;
 
                   case "ls":
+                    const baseOutput =
+                      ".\n..\nabout\ncontact\ncurriculum-vitae\ndashboard\nhome\nlogin\nprojects";
+                    const secretOutput = "\n.s3cr3t";
                     if (
                       commandLine[1] === "-a" ||
                       commandLine[1] === "-al" ||
@@ -155,16 +158,12 @@ export default function TerminalAnimated() {
                     ) {
                       pushCommand(
                         inputValue + " ~",
-                        ".\n..\nabout\ncontact\ndocuments\nhome\nprojects\n.s3cr3t",
+                        baseOutput + secretOutput,
                         CommandType.SYSTEM,
                       );
                     } else {
                       // List the contents of the current directory if the command is "ls"
-                      pushCommand(
-                        "ls ~",
-                        ".\n..\nabout\ncontact\ndocuments\nhome\nprojects",
-                        CommandType.SYSTEM,
-                      );
+                      pushCommand("ls ~", baseOutput, CommandType.SYSTEM);
                     }
                     break;
 
