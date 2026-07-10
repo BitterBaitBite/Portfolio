@@ -1,6 +1,8 @@
 node_modules
 dist
+dist/*
 .next
+.next/*
 out
 .DS_Store
 .env

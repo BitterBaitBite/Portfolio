@@ -1,4 +1,5 @@
 "use client";
+
 import { Project, Tag } from "@/types";
 import { Dispatch, SetStateAction } from "react";
 import CloseCircleIcon from "../svg/CloseCircleIcon";
@@ -59,6 +60,10 @@ export default function ProjectFilters({
       {/* SEARCH */}
       <div className="flex flex-col gap-4 md:flex-row md:gap-4">
         <div className="flex flex-col gap-2 w-1/2">
+          <h3 className="display-none text-sm uppercase tracking-[0.25em] text-slate-300 md:display-block">
+            Filtros
+          </h3>
+
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -81,9 +86,9 @@ export default function ProjectFilters({
             "rounded-sm border border-slate-800 bg-slate-950/20 px-4 py-2",
           ].join(" ")}
         >
-          <p className="display-none text-sm uppercase tracking-[0.25em] text-slate-400 md:display-block">
+          <h3 className="display-none text-sm uppercase tracking-[0.25em] text-slate-400 md:display-block">
             Etiquetas
-          </p>
+          </h3>
 
           <div className="flex flex-wrap gap-1 content-evenly items-center">
             <>
