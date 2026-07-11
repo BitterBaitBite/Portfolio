@@ -2,13 +2,21 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { About, Project, Tag } from "@/types";
-import { getAbout, getProjects, getTags } from "@/services/projectService";
+import { About, Contact, CurriculumVitae, Project, Tag } from "@/types";
+import {
+  getAbout,
+  getContact,
+  getCurriculumVitae,
+  getProjects,
+  getTags,
+} from "@/services/projectService";
 import { validateSession } from "@/services/adminService";
 import { PORTFOLIO_TOKEN_LOCAL_STORAGE_KEY } from "@/config/auth";
 import { ProjectAdmin } from "@/components/dashboard/ProjectAdmin";
 import { TagAdmin } from "@/components/dashboard/TagAdmin";
 import { AboutAdmin } from "@/components/dashboard/AboutAdmin";
+import { ContactAdmin } from "@/components/dashboard/ContactAdmin";
+import { CurriculumVitaeAdmin } from "@/components/dashboard/CurriculumVitaeAdmin";
 
 export default function DashboardPage() {
   const [token, setToken] = useState<string | null>(null);
@@ -16,6 +24,9 @@ export default function DashboardPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [about, setAbout] = useState<About | null>(null);
+  const [contact, setContact] = useState<Contact | null>(null);
+  const [curriculumVitae, setCurriculumVitae] =
+    useState<CurriculumVitae | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,15 +66,20 @@ export default function DashboardPage() {
 
     setError(null);
     try {
-      const [projectList, tagList, aboutData] = await Promise.all([
-        getProjects(),
-        getTags(),
-        getAbout(),
-      ]);
+      const [projectList, tagList, aboutData, contactData, curriculumData] =
+        await Promise.all([
+          getProjects(),
+          getTags(),
+          getAbout(),
+          getContact(),
+          getCurriculumVitae(),
+        ]);
 
       setProjects(projectList);
       setTags(tagList);
       setAbout(aboutData);
+      setContact(contactData);
+      setCurriculumVitae(curriculumData);
     } catch (fetchError) {
       setError(`Error cargando datos: ${fetchError}`);
     }
@@ -140,6 +156,14 @@ export default function DashboardPage() {
           />
 
           <AboutAdmin token={token} about={about} onRefresh={loadAdminData} />
+
+          <ContactAdmin token={token} contact={contact} onRefresh={loadAdminData} />
+
+          <CurriculumVitaeAdmin
+            token={token}
+            curriculumVitae={curriculumVitae}
+            onRefresh={loadAdminData}
+          />
         </div>
 
         <TagAdmin token={token} tags={tags} onRefresh={loadAdminData} />

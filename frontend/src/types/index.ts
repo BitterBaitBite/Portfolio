@@ -25,6 +25,24 @@ export interface About {
   body: string;
 }
 
+export interface Contact {
+  id: string;
+  email?: string;
+  phone?: string;
+  linkedin?: string;
+  github?: string;
+}
+
+export interface CurriculumVitae {
+  id: string;
+  summary?: string;
+  experience?: string[];
+  education?: string[];
+  credentials?: string[];
+  languages?: string[];
+  fileUrl?: string;
+}
+
 export interface AuthResponse {
   accessToken: string;
   user: {

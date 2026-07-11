@@ -1,4 +1,4 @@
-import { About, Project, Tag } from "@/types";
+import { About, Contact, CurriculumVitae, Project, Tag } from "@/types";
 import { buildUrl, fetcher } from "@/lib/api";
 
 export interface ProjectFilter {
@@ -36,4 +36,12 @@ export async function getTags() {
 
 export async function getAbout() {
   return fetcher<About>(buildUrl("/about"));
+}
+
+export async function getContact() {
+  return fetcher<Contact>(buildUrl("/contact"));
+}
+
+export async function getCurriculumVitae() {
+  return fetcher<CurriculumVitae>(buildUrl("/curriculum-vitae"));
 }
