@@ -1,4 +1,4 @@
-import { About, Project, Tag } from "@/types";
+import { About, Contact, CurriculumVitae, Project, Tag } from "@/types";
 import { buildUrl, fetcher } from "@/lib/api";
 
 function authHeaders(token: string) {
@@ -103,5 +103,31 @@ export async function upsertAbout(
       ...authHeaders(token),
     },
     body: JSON.stringify(about),
+  });
+}
+
+export async function upsertContact(
+  token: string,
+  contact: Partial<Contact> & { id?: string },
+) {
+  return fetcher<Contact>(buildUrl("/contact/upsert"), {
+    method: "PATCH",
+    headers: {
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(contact),
+  });
+}
+
+export async function upsertCurriculumVitae(
+  token: string,
+  curriculumVitae: Partial<CurriculumVitae> & { id?: string },
+) {
+  return fetcher<CurriculumVitae>(buildUrl("/curriculum-vitae/upsert"), {
+    method: "PATCH",
+    headers: {
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(curriculumVitae),
   });
 }

@@ -7,6 +7,8 @@ import { AuthModule } from "./auth/auth.module";
 import { ProjectsModule } from "./projects/projects.module";
 import { TagsModule } from "./tags/tags.module";
 import { AboutModule } from "./about/about.module";
+import { ContactModule } from "./contact/contact.module";
+import { CurriculumVitaeModule } from "./curriculum-vitae/curriculum-vitae.module";
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { AboutModule } from "./about/about.module";
     ProjectsModule,
     TagsModule,
     AboutModule,
+    ContactModule,
+    CurriculumVitaeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
