@@ -49,17 +49,37 @@ export default function AboutPage() {
                   <div
                     key={`${section.title || "section"}-${index}`}
                     className={[
-                      "p-8 from-white/[1] via-zinc-900/5 to-zinc-950/50",
-                      "border border-r-transparent border-b-transparent border-t-zinc-700 border-l-zinc-700",
-                      "hover:scale-105 hover:border-r-zinc-500 hover:border-b-zinc-500 hover:border-t-transparent hover:border-l-transparent",
+                      "relative overflow-hidden group",
+                      "p-8 bg-zinc-900/5 hover:scale-[102%]",
                       "transition-all duration-700 ease-out",
-                      "hover:bg-gradient-to-br hover:from-white/[0.07] hover:via-zinc-950/40 hover:to-zinc-950/60",
+                      // "border border-r-transparent border-b-transparent border-t-zinc-700 border-l-zinc-700",
+                      // "hover:border-r-zinc-500 hover:border-b-zinc-500 hover:border-t-transparent hover:border-l-transparent",
                     ].join(" ")}
                   >
                     <div
                       className={[
+                        "absolute inset-0 -z-10",
+                        "bg-gradient-to-br from-white/[0.07] via-zinc-950/40 to-zinc-950/60",
+                        "opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100",
+                      ].join(" ")}
+                    />
+
+                    <div
+                      className={[
+                        "pointer-events-none absolute -z-10",
+                        "w-[200%] h-[200%] -left-[50%] -top-[50%]",
+                        "rotate-[35deg] blur-md",
+                        "bg-gradient-to-br from-transparent via-white/[0.01] via-white/[0.08] via-white/[0.01] to-transparent",
+                        "translate-x-[50%] translate-y-[50%]",
+                        "transition-transform duration-300 ease-out",
+                        "group-hover:-translate-x-[60%] group-hover:-translate-y-[-60%]",
+                      ].join(" ")}
+                    />
+
+                    <div
+                      className={[
                         "flex flex-col gap-6",
-                        "",
+                        "relative z-10",
                         section.imageUrl ? "md:flex-row" : "",
                         section.imageUrl && isRightAligned
                           ? "md:flex-row-reverse"
