@@ -1,5 +1,6 @@
 import DynamicLinkButton from "@/components/common/DynamicLinkButton";
 import GithubRepoCard from "@/components/github/GithubRepoCard";
+import SectionCard from "@/components/home/SectionCard";
 import GithubIcon from "@/components/svg/GithubIcon";
 import InternalLinkIcon from "@/components/svg/InternalLinkIcon";
 import { getRepos } from "@/services/githubService";
@@ -18,13 +19,7 @@ export default async function HomePage() {
     >
       <div className="flex flex-col gap-4 flex-1 md:flex-1/2">
         {/* PROJECTS */}
-        <div
-          className={[
-            "flex flex-col gap-2",
-            "rounded-sm border border-zinc-700 bg-zinc-950/20",
-            "px-2 py-1 sm:px-4 sm:py-2 lg:px-6 lg:py-4",
-          ].join(" ")}
-        >
+        <SectionCard>
           <h2 className="text-xl font-semibold text-slate-300 uppercase tracking-wider">
             Projects
           </h2>
@@ -39,16 +34,10 @@ export default async function HomePage() {
             text={"View All Projects"}
             icon={InternalLinkIcon}
           />
-        </div>
+        </SectionCard>
 
         {/* ABOUT */}
-        <div
-          className={[
-            "flex flex-col gap-2",
-            "rounded-sm border border-zinc-700 bg-zinc-950/20",
-            "px-2 py-1 sm:px-4 sm:py-2 lg:px-6 lg:py-4",
-          ].join(" ")}
-        >
+        <SectionCard>
           <h2 className="text-xl text-slate-300 uppercase tracking-wider">
             About<span className="text-cyan-500 font-bold"> Me</span>
           </h2>
@@ -63,17 +52,11 @@ export default async function HomePage() {
             text={"About me"}
             icon={InternalLinkIcon}
           />
-        </div>
+        </SectionCard>
       </div>
 
       {/* GITHUB */}
-      <div
-        className={[
-          "flex flex-col gap-4 flex-1 md:flex-1/2",
-          "px-4 py-2 sm:p-6 lg:p-8",
-          "rounded-sm border border-zinc-700 bg-zinc-950/20 p-4",
-        ].join(" ")}
-      >
+      <SectionCard>
         <h2 className="text-xl font-semibold text-slate-300 uppercase tracking-wider">
           Github
         </h2>
@@ -83,7 +66,7 @@ export default async function HomePage() {
             <GithubRepoCard key={repo.id} {...repo} />
           ))}
         </ul>
-      </div>
+      </SectionCard>
     </section>
   );
 }
