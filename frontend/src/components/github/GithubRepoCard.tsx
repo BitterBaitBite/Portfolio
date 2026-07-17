@@ -16,10 +16,14 @@ export default function GithubRepoCard({
       key={id}
       className={[
         "flex flex-col gap-3",
-        "bg-slate-800/20 py-3 px-4 rounded-sm",
+        "bg-zinc-700/20 py-3 px-4 rounded-sm",
+        "hover:bg-zinc-600/20",
+        "transition-all duration-300 ease-in-out",
       ].join(" ")}
     >
-      <h3 className="text-base tracking-wider text-slate-300">{name}</h3>
+      <h3 className="text-base tracking-wider text-slate-300 leading-none">
+        {name}
+      </h3>
 
       {description && <p className="text-slate-500 text-sm">{description}</p>}
 
@@ -36,9 +40,9 @@ export default function GithubRepoCard({
         </div>
       )}
 
-      <hr className="border-slate-700 mt-1" />
+      <hr className="border-slate-700 mt-1.5" />
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mt-1">
         <span className="text-sm font-bold py-1 px-3 bg-green-600 text-zinc-900 rounded-sm">
           {language}
         </span>
