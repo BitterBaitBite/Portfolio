@@ -1,33 +1,36 @@
 import { buildExternalUrl, fetcher } from "@/lib/api";
-import { Repo } from "@/types";
+import { DevToArticle as Article } from "@/types";
 
-export interface DevToArticleFilter {
-  tag?: string;
-  limit?: number;
+enum ArticleState {
+  "fresh" = "fresh",
+  "rising" = "rising",
+  "all" = "all",
 }
 
-export async function getDevToArticles({
-  tag = "javascript",
-  limit = 5,
-}: DevToArticleFilter) {
-  try {
-    const response = await fetch(
-      `https://dev.to/api/articles?tag=${tag}&per_page=${limit}`,
-    );
-    if (!response.isOk) throw new Error(`Dev.to error: ${response.status}`);
+export interface ArticleFilter {
+  page?: number;
+  per_page?: number;
+  tag?: string;
+  tags?: string;
+  tags_exclude?: string;
+  username?: string;
+  state?: ArticleState;
+  top?: number;
+  collection_id?: number;
+}
 
-    const data = await response.json();
+export async function getDevToArticles(
+  filter: ArticleFilter = {},
+): Promise<Article[]> {
+  const baseUrl = "https://dev.to/api/articles";
+  const query: Record<string, string | number> = {};
 
-    // Normalizamos la respuesta para tu componente
-    return data.map((article) => ({
-      title: article.title,
-      url: article.url,
-      description: article.description,
-      image: article.cover_image || article.social_image,
-      date: new Date(article.published_at).toLocaleDateString(),
-    }));
-  } catch (error) {
-    console.error("Error cargando artículos de Dev.to:", error);
-    return [];
-  }
+  Object.entries(filter).forEach(([key, value]) => {
+    if (value !== undefined) {
+      query[key] = value;
+    }
+  });
+
+  const url = buildExternalUrl(baseUrl, query);
+  return fetcher<Article[]>(url, { next: { revalidate: 86400 } });
 }

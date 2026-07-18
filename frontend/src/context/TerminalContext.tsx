@@ -4,7 +4,7 @@ import { MOTD_ES, MOTD_EN } from "@/components/terminal/MOTD";
 import { usePathname } from "next/navigation";
 import React, { createContext, useContext, useState, useCallback } from "react";
 
-export const enum CommandType {
+export enum CommandType {
   COMMAND = "command",
   OUTPUT = "output",
   SYSTEM = "system",
