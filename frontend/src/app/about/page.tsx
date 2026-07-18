@@ -26,44 +26,49 @@ export default function AboutPage() {
         "px-4 py-2 sm:p-6 lg:p-8",
       ].join(" ")}
     >
-      <h1 className="text-3xl font-semibold text-slate-300">About Me</h1>
-
       {isLoading ? (
-        <p className="mt-4 text-slate-300">Cargando contenido...</p>
+        <p className="text-slate-300">Cargando contenido...</p>
       ) : error ? (
-        <p className="mt-4 text-red-400">{error}</p>
+        <p className="text-red-400">{error}</p>
       ) : about ? (
-        <div className="mt-6 space-y-6 text-slate-300">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-semibold text-slate-300">
-              {about.title}
-            </h2>
+        <div className="text-slate-300 flex flex-col gap-6">
+          <h1 className="text-3xl font-semibold text-slate-300">
+            {about.title}
+          </h1>
 
-            {about.subtitle ? (
-              <p className="text-slate-400">{about.subtitle}</p>
-            ) : null}
-          </div>
+          {about.subtitle ? (
+            <p className="text-slate-400">{about.subtitle}</p>
+          ) : null}
 
           {sections.length ? (
-            <div className="space-y-4">
+            <div className="flex flex-col gap-6">
               {sections.map((section, index) => {
                 const isRightAligned = section.alignment === "right";
 
                 return (
                   <div
                     key={`${section.title || "section"}-${index}`}
-                    className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5"
+                    className={[
+                      "p-8 bg-zinc-900/5 hover:scale-[102%]",
+                      "transition-all duration-700 ease-out",
+                      "hover:bg-gradient-to-br from-white/[0.07] via-zinc-950/40 to-zinc-950/60",
+                    ].join(" ")}
                   >
                     <div
-                      className={`flex flex-col gap-4 ${
-                        section.imageUrl ? "md:flex-row" : ""
-                      } ${section.imageUrl && isRightAligned ? "md:flex-row-reverse" : ""}`}
+                      className={[
+                        "flex flex-col gap-6",
+                        "relative z-10",
+                        section.imageUrl ? "md:flex-row" : "",
+                        section.imageUrl && isRightAligned
+                          ? "md:flex-row-reverse"
+                          : "",
+                      ].join(" ")}
                     >
                       {section.imageUrl ? (
                         <img
                           src={section.imageUrl}
                           alt={section.title || "Imagen del bloque About"}
-                          className="h-56 w-full rounded-2xl object-cover md:w-2/5"
+                          className="h-56 w-full rounded-md object-cover md:w-2/5"
                         />
                       ) : null}
 
@@ -73,6 +78,7 @@ export default function AboutPage() {
                             {section.title}
                           </h3>
                         ) : null}
+
                         <p className="mt-2 leading-7 whitespace-pre-line">
                           {section.content}
                         </p>

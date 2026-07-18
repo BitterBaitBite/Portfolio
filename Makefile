@@ -2,9 +2,11 @@
 
 all: backend-build frontend-build
 
+dev: backend-dev frontend-dev
+
 # Backend targets
 backend-install:
-	cd backend && npm install --legacy-peer-deps
+	cd backend && npm install
 
 backend-migrate:
 	cd backend && npm run prisma:migrate
@@ -29,7 +31,7 @@ backend-test-cov:
 
 # Frontend targets
 frontend-install:
-	cd frontend && npm install --legacy-peer-deps
+	cd frontend && npm install
 
 frontend-dev:
 	cd frontend && npm run dev

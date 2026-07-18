@@ -21,7 +21,7 @@ export default function DynamicLinkButton({
       className={[
         "group",
         "flex flex-row justify-end",
-        "mt-2 w-36 h-8 self-end p-0.5",
+        "w-36 h-8 self-end p-0.5",
         "rounded-full border-2 border-slate-500",
         "transition-all duration-300 ease-in-out",
         className,
