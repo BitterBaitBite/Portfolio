@@ -7,7 +7,7 @@
  * 3. Integrar el componente Aside en tu página
  */
 
-import Aside, { TabItem } from "./Aside";
+import NewsSection, { TabItem } from "./NewsSection";
 
 interface ExampleItem extends TabItem {
   title: string;
@@ -17,17 +17,17 @@ interface ExampleItem extends TabItem {
 
 const devItems: ExampleItem[] = [
   {
-    id: "dev-1",
+    id: 1,
     title: "React Development",
     description: "Building modern web applications with React",
   },
   {
-    id: "dev-2",
+    id: 2,
     title: "TypeScript",
     description: "Type-safe JavaScript development",
   },
   {
-    id: "dev-3",
+    id: 3,
     title: "Next.js",
     description: "Full-stack React framework",
   },
@@ -35,12 +35,12 @@ const devItems: ExampleItem[] = [
 
 const cyberItems: ExampleItem[] = [
   {
-    id: "cyber-1",
+    id: 1,
     title: "Network Security",
     description: "Securing network communications",
   },
   {
-    id: "cyber-2",
+    id: 2,
     title: "Penetration Testing",
     description: "Authorized security assessments",
   },
@@ -48,17 +48,17 @@ const cyberItems: ExampleItem[] = [
 
 const gameDevItems: ExampleItem[] = [
   {
-    id: "game-1",
+    id: 1,
     title: "Unity Development",
     description: "3D game development with Unity",
   },
   {
-    id: "game-2",
+    id: 2,
     title: "Game Design",
     description: "Creating engaging game mechanics",
   },
   {
-    id: "game-3",
+    id: 3,
     title: "Graphics Programming",
     description: "Advanced rendering techniques",
   },
@@ -76,9 +76,9 @@ const renderExampleItem = (item: TabItem) => {
   );
 };
 
-export default function AsideExample() {
+export default function NewsExample() {
   return (
-    <Aside
+    <NewsSection
       devItems={devItems}
       cyberItems={cyberItems}
       gameDevItems={gameDevItems}

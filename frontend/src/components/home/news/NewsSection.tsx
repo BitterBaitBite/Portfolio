@@ -5,11 +5,11 @@ import TabButton from "./TabButton";
 import TabContent from "./TabContent";
 
 export interface TabItem {
-  id: string;
+  id: number;
   [key: string]: any;
 }
 
-export interface AsideProps {
+export interface NewsSectionProps {
   devItems: TabItem[];
   cyberItems: TabItem[];
   gameDevItems: TabItem[];
@@ -18,12 +18,12 @@ export interface AsideProps {
 
 type TabType = "dev" | "cyber" | "gamedev";
 
-export default function Aside({
+export default function NewsSection({
   devItems,
   cyberItems,
   gameDevItems,
   renderItem,
-}: AsideProps) {
+}: NewsSectionProps) {
   const [activeTab, setActiveTab] = useState<TabType>("dev");
 
   const tabs: { id: TabType; label: string; count: number }[] = [

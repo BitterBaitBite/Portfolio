@@ -1,4 +1,4 @@
-import { TabItem } from "./Aside";
+import { TabItem } from "./NewsSection";
 
 interface TabContentProps {
   items: TabItem[];

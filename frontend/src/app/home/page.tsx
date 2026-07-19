@@ -1,11 +1,15 @@
 import DynamicLinkButton from "@/components/common/DynamicLinkButton";
 import GithubRepoCard from "@/components/github/GithubRepoCard";
+import NewsSection, {
+  TabItem as NewsItem,
+} from "@/components/home/news/NewsSection";
 import SectionCard from "@/components/home/SectionCard";
 import GithubIcon from "@/components/svg/GithubIcon";
 import InternalLinkIcon from "@/components/svg/InternalLinkIcon";
 import { getDevToArticles } from "@/services/devToService";
 import { getRepos } from "@/services/githubService";
 import { Repo } from "@/types";
+import { render } from "@testing-library/react";
 import Link from "next/link";
 
 export default async function HomePage() {
@@ -15,6 +19,39 @@ export default async function HomePage() {
     per_page: 5,
     top: 5,
   });
+
+  interface NewsTemplateItem extends NewsItem {
+    id: number;
+    url: string;
+    title: string;
+    description: string;
+    name?: string;
+    username?: string;
+    icon?: string;
+  }
+  const renderNewsTemplate = (item: NewsItem) => {
+    const newsItem = item as NewsTemplateItem;
+
+    return (
+      <Link
+        key={newsItem.id}
+        className="flex flex-col"
+        href={newsItem.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <h3 className="block">{newsItem.title}</h3>
+
+        <p className="text-slate-600">{newsItem.description}</p>
+
+        {(newsItem.name || newsItem.username) && (
+          <span>
+            {newsItem.name} | {newsItem.username}
+          </span>
+        )}
+      </Link>
+    );
+  };
 
   return (
     <section
@@ -76,7 +113,7 @@ export default async function HomePage() {
 
       <div
         className={[
-          "flex flex-col gap-4",
+          "flex flex-col gap-2",
           "w-1/4 p-4",
           "shadow-[3px_3px_0px_0px] shadow-zinc-400/15",
           "hover:shadow-[0]",
@@ -85,29 +122,43 @@ export default async function HomePage() {
           "hover:bg-gradient-to-br from-white/[0.07] via-zinc-950/50 to-zinc-950/70",
         ].join(" ")}
       >
-        {devToArticles
-          ?.filter(
-            (article) =>
-              (article.language === "en" || article.language === "es") &&
-              article.url.startsWith("https://dev.to"),
-          )
-          .map((article) => (
-            <Link
-              className="flex flex-col"
-              href={article.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <h3 className="block">{article.title}</h3>
+        <h2 className="text-xl font-semibold text-slate-300 uppercase tracking-wider">
+          News
+        </h2>
 
-              <p className="text-slate-600">{article.description}</p>
+        <div className="flex flex-col gap-4">
+          {devToArticles
+            ?.filter(
+              (article) =>
+                (article.language === "en" || article.language === "es") &&
+                article.url.startsWith("https://dev.to"),
+            )
+            .map((article) => (
+              <Link
+                key={article.id}
+                className="flex flex-col"
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <h3 className="block">{article.title}</h3>
 
-              <span>
-                {article.user.name} | {article.user.username}
-              </span>
-            </Link>
-          ))}
+                <p className="text-slate-600">{article.description}</p>
+
+                <span>
+                  {article.user.name} | {article.user.username}
+                </span>
+              </Link>
+            ))}
+        </div>
       </div>
+
+      {/* <NewsSection
+        devItems={[{ id: 1, title: "test dev" }]}
+        cyberItems={[{ id: 1, title: "test cyber" }]}
+        gameDevItems={[{ id: 1, title: "test gamedev" }]}
+        renderItem={renderNewsTemplate}
+      /> */}
     </section>
   );
 }
