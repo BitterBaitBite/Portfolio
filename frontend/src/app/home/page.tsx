@@ -3,6 +3,7 @@ import GithubRepoCard from "@/components/github/GithubRepoCard";
 import NewsSection, {
   TabItem as NewsItem,
 } from "@/components/home/news/NewsSection";
+import NewsTabSection from "@/components/home/news/NewsTabSection";
 import SectionCard from "@/components/home/SectionCard";
 import GithubIcon from "@/components/svg/GithubIcon";
 import InternalLinkIcon from "@/components/svg/InternalLinkIcon";
@@ -20,41 +21,8 @@ export default async function HomePage() {
     top: 5,
   });
 
-  interface NewsTemplateItem extends NewsItem {
-    id: number;
-    url: string;
-    title: string;
-    description: string;
-    name?: string;
-    username?: string;
-    icon?: string;
-  }
-  const renderNewsTemplate = (item: NewsItem) => {
-    const newsItem = item as NewsTemplateItem;
-
-    return (
-      <Link
-        key={newsItem.id}
-        className="flex flex-col"
-        href={newsItem.url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <h3 className="block">{newsItem.title}</h3>
-
-        <p className="text-slate-600">{newsItem.description}</p>
-
-        {(newsItem.name || newsItem.username) && (
-          <span>
-            {newsItem.name} | {newsItem.username}
-          </span>
-        )}
-      </Link>
-    );
-  };
-
   return (
-    <section
+    <div
       className={[
         "flex flex-col gap-2 sm:gap-4 md:flex-row md:gap-6",
         "px-4 py-2 sm:p-6 lg:p-8",
@@ -111,7 +79,7 @@ export default async function HomePage() {
         </ul>
       </SectionCard>
 
-      <div
+      {/* <section
         className={[
           "flex flex-col gap-2",
           "w-1/4 p-4",
@@ -151,14 +119,9 @@ export default async function HomePage() {
               </Link>
             ))}
         </div>
-      </div>
+      </section> */}
 
-      {/* <NewsSection
-        devItems={[{ id: 1, title: "test dev" }]}
-        cyberItems={[{ id: 1, title: "test cyber" }]}
-        gameDevItems={[{ id: 1, title: "test gamedev" }]}
-        renderItem={renderNewsTemplate}
-      /> */}
-    </section>
+      <NewsTabSection devNews={devToArticles} />
+    </div>
   );
 }

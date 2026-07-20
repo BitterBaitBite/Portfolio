@@ -8,7 +8,7 @@ interface SectionCardProps {
 
 export default function SectionCard({ children }: SectionCardProps) {
   return (
-    <div
+    <section
       className={[
         "flex flex-col gap-2 flex-1",
         "w-full max-h-max px-2 py-1 sm:px-4 sm:py-2 lg:px-6 lg:py-4",
@@ -20,6 +20,6 @@ export default function SectionCard({ children }: SectionCardProps) {
       ].join(" ")}
     >
       {children}
-    </div>
+    </section>
   );
 }
