@@ -55,8 +55,7 @@ export interface AuthResponse {
   };
 }
 
-export // 1. Estructura de cada item que devuelve la API rss2json
-interface RSS2JsonItem {
+export interface RSS2JsonItem {
   title: string;
   pubDate: string;
   link: string;
@@ -73,8 +72,7 @@ interface RSS2JsonItem {
   categories: string[];
 }
 
-// 2. Estructura de la respuesta global de rss2json
-interface RSS2JsonResponse {
+export interface RSS2JsonResponse {
   status: "ok" | "error";
   feed: {
     url: string;

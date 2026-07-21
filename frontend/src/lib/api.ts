@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/config/api";
+import { RSS2JsonResponse } from "@/types";
 
 export function buildUrl(
   path: string,
@@ -78,7 +79,7 @@ async function getTechnicalFeed(rssUrl: string) {
     );
 
     if (!response.ok) throw new Error(`Error en HTTP: ${response.status}`);
-    const data = await response.json();
+    const data: RSS2JsonResponse = await response.json();
 
     return data.items.map((item) => ({
       title: item.title,
@@ -89,7 +90,7 @@ async function getTechnicalFeed(rssUrl: string) {
       date: new Date(item.pubDate).toLocaleDateString(),
     }));
   } catch (error) {
-    console.error("Error obtaining RSS data", error);
+    console.error(`Source: Error obtaining RSS data`, error);
     return [];
   }
 }
