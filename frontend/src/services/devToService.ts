@@ -1,10 +1,10 @@
 import { buildExternalUrl, fetcher } from "@/lib/api";
 import { DevToArticle as Article } from "@/types";
 
-enum ArticleState {
-  "fresh" = "fresh",
-  "rising" = "rising",
-  "all" = "all",
+export enum ArticleState {
+  FRESH = "fresh",
+  RISING = "rising",
+  ALL = "all",
 }
 
 export interface ArticleFilter {
