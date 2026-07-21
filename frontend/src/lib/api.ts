@@ -69,3 +69,27 @@ export async function fetcher<T>(
 
   return response.json();
 }
+
+async function getTechnicalFeed(rssUrl: string) {
+  try {
+    const encodedUrl = encodeURIComponent(rssUrl);
+    const response = await fetch(
+      `https://api.rss2json.com/v1/api.json?rss_url=${encodedUrl}`,
+    );
+
+    if (!response.ok) throw new Error(`Error en HTTP: ${response.status}`);
+    const data = await response.json();
+
+    return data.items.map((item) => ({
+      title: item.title,
+      url: item.link,
+      description:
+        item.description.replace(/<[^>]*>/g, "").substring(0, 150) + "...",
+      image: item.thumbnail || item.enclosure?.link || null,
+      date: new Date(item.pubDate).toLocaleDateString(),
+    }));
+  } catch (error) {
+    console.error("Error obtaining RSS data", error);
+    return [];
+  }
+}

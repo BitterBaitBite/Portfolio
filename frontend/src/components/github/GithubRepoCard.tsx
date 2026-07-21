@@ -17,7 +17,7 @@ export default function GithubRepoCard({
       className={[
         "flex flex-col gap-3",
         "bg-zinc-700/20 py-3 px-4 rounded-sm",
-        "hover:bg-zinc-600/20",
+        "hover:bg-slate-600/30",
         "transition-all duration-300 ease-in-out",
       ].join(" ")}
     >

@@ -13,17 +13,11 @@ export async function getRepos(filter: GithubRepoFilter = {}): Promise<Repo[]> {
 
   const query: Record<string, string | string[]> = {};
 
-  if (filter.sort) {
-    query.sort = filter.sort;
-  }
-
-  if (filter.per_page) {
-    query.per_page = filter.per_page;
-  }
-
-  if (filter.type && filter.type.length > 0) {
-    query.type = filter.type;
-  }
+  Object.entries(filter).forEach(([key, value]) => {
+    if (value !== undefined) {
+      query[key] = value;
+    }
+  });
 
   const url = buildExternalUrl(`${baseUrl}/users/${username}/repos`, query);
 

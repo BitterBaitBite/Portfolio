@@ -55,6 +55,39 @@ export interface AuthResponse {
   };
 }
 
+export // 1. Estructura de cada item que devuelve la API rss2json
+interface RSS2JsonItem {
+  title: string;
+  pubDate: string;
+  link: string;
+  guid: string;
+  author: string;
+  thumbnail: string;
+  description: string;
+  content: string;
+  enclosure?: {
+    link?: string;
+    type?: string;
+    length?: number;
+  };
+  categories: string[];
+}
+
+// 2. Estructura de la respuesta global de rss2json
+interface RSS2JsonResponse {
+  status: "ok" | "error";
+  feed: {
+    url: string;
+    title: string;
+    link: string;
+    author: string;
+    description: string;
+    image: string;
+  };
+  items: RSS2JsonItem[];
+  message?: string;
+}
+
 export interface Repo {
   id: number;
   name: string;
@@ -63,6 +96,16 @@ export interface Repo {
   stargazers_count: number;
   language: string;
   topics: string[];
+}
+
+export interface NewsArticle {
+  id: number;
+  title: string;
+  description: string;
+  url: string;
+  name?: string;
+  username?: string;
+  image: string | null;
 }
 
 // Dev.to News API
@@ -89,7 +132,7 @@ export interface DevToArticle {
   public_reactions_count: number;
   collection_id: number | null;
   published_timestamp: string;
-  language: string; // "en";
+  language: string;
   subforem_id: number;
   positive_reactions_count: number;
   cover_image: string | null;
