@@ -3,7 +3,10 @@ import GithubRepoCard from "@/components/github/GithubRepoCard";
 import NewsSection from "@/components/home/news/NewsSection";
 import SectionCard from "@/components/home/SectionCard";
 import InternalLinkIcon from "@/components/svg/InternalLinkIcon";
+import { getBleepingArticles } from "@/services/bleepingComputerService";
 import { ArticleState, getDevToArticles } from "@/services/devToService";
+import { getEightyLevelArticles } from "@/services/eightyLevelService";
+import { getGameDeveloperArticles } from "@/services/gameDeveloperService";
 import { getRepos } from "@/services/githubService";
 import { Repo } from "@/types";
 
@@ -15,6 +18,9 @@ export default async function HomePage() {
     top: 15,
     state: ArticleState.RISING,
   });
+  const bleepingArticles = await getBleepingArticles();
+  const gameDeveloperArticles = await getGameDeveloperArticles();
+  const eightyLevelArticles = await getEightyLevelArticles();
 
   return (
     <div
@@ -75,7 +81,11 @@ export default async function HomePage() {
       </SectionCard>
 
       {/* NEWS */}
-      <NewsSection devNews={devToArticles} />
+      <NewsSection
+        devNews={devToArticles}
+        cyberNews={bleepingArticles}
+        gameNews={gameDeveloperArticles}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "@/config/api";
-import { RSS2JsonResponse } from "@/types";
+import { NewsArticle, RSS2JsonResponse } from "@/types";
 
 export function buildUrl(
   path: string,
@@ -71,26 +71,28 @@ export async function fetcher<T>(
   return response.json();
 }
 
-async function getTechnicalFeed(rssUrl: string) {
+export async function getTechnicalFeed(rssUrl: string): Promise<NewsArticle[]> {
   try {
     const encodedUrl = encodeURIComponent(rssUrl);
     const response = await fetch(
       `https://api.rss2json.com/v1/api.json?rss_url=${encodedUrl}`,
     );
 
-    if (!response.ok) throw new Error(`Error en HTTP: ${response.status}`);
-    const data: RSS2JsonResponse = await response.json();
+    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
-    return data.items.map((item) => ({
+    const data: RSS2JsonResponse = await response.json();
+    return data.items.map<NewsArticle>((item) => ({
+      id: item.guid,
       title: item.title,
-      url: item.link,
       description:
-        item.description.replace(/<[^>]*>/g, "").substring(0, 150) + "...",
+        item.description.replace(/<[^>]*>/g, "").substring(0, 90) + "...",
+      url: item.link,
+      name: item.author,
       image: item.thumbnail || item.enclosure?.link || null,
       date: new Date(item.pubDate).toLocaleDateString(),
     }));
   } catch (error) {
-    console.error(`Source: Error obtaining RSS data`, error);
+    console.error(`Source: ${rssUrl}.\nError obtaining RSS data\n`, error);
     return [];
   }
 }
