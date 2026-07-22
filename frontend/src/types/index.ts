@@ -97,12 +97,13 @@ export interface Repo {
 }
 
 export interface NewsArticle {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   url: string;
   name?: string;
   username?: string;
+  date?: string;
   image: string | null;
 }
 

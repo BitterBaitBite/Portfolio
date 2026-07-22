@@ -4,6 +4,7 @@ import { DevToArticle, NewsArticle } from "@/types";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import TabButton from "./TabButton";
+import Image from "next/image";
 
 enum NewsTabType {
   DEV = "dev",
@@ -26,6 +27,7 @@ function mapDevToArticle(dto: DevToArticle): NewsArticle {
     name: dto.user.name,
     username: dto.user.username,
     image: dto.cover_image,
+    date: new Date(dto.published_at).toLocaleDateString(),
   };
 }
 
@@ -44,8 +46,24 @@ export default function NewsSection({
   );
 
   const newsArticles: NewsArticle[] = useMemo(() => {
-    return devNews.map(mapDevToArticle);
-  }, [devNews, cyberNews, gameNews]);
+    switch (currentTab) {
+      case NewsTabType.DEV:
+        // Filter by language and map to default Article type and format
+        return devNews
+          .filter(
+            (el: DevToArticle) =>
+              (el.language === "en" || el.language === "es") &&
+              el.url.startsWith("https://dev.to"),
+          )
+          .map(mapDevToArticle);
+      case NewsTabType.CYBER:
+        return cyberNews.slice(0, 5);
+      case NewsTabType.GAMEDEV:
+        return gameNews.slice(0, 5);
+      default:
+        return [];
+    }
+  }, [devNews, cyberNews, gameNews, currentTab]);
 
   return (
     <aside
@@ -79,39 +97,48 @@ export default function NewsSection({
         />
       </div>
 
-      <section className={["flex flex-col"].join(" ")}>
-        {isCurrentTab(NewsTabType.DEV) &&
-          devNews
-            ?.filter(
-              (el: DevToArticle) =>
-                (el.language === "en" || el.language === "es") &&
-                el.url.startsWith("https://dev.to"),
-            )
-            .map((el: DevToArticle) => (
-              <article
+      <div className={["flex flex-col"].join(" ")}>
+        {newsArticles &&
+          newsArticles.map((el: NewsArticle) => (
+            <article
+              key={el.id}
+              className={[
+                "w-full group px-4 py-3 hover:bg-slate-600/30",
+                "transition-all duration-300 ease-in-out",
+              ].join(" ")}
+            >
+              <Link
                 key={el.id}
-                className="w-full group px-4 py-3 hover:bg-slate-600/30"
+                className="flex flex-col gap-1 w-full"
+                href={el.url}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <Link
-                  key={el.id}
-                  className={["flex flex-col gap-1 w-full"].join(" ")}
-                  href={el.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <h3 className="line-clamp-1 text-[14px] leading-5">
-                    {el.title}
-                  </h3>
+                {/* Thumbnail not consistent enough (not every article has an image, or it is not suitable) */}
+                {/* {el.image && (
+                  <picture className="w-full h-28 relative hidden group-hover:block">
+                    <Image
+                      alt={el.title}
+                      src={el.image}
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                  </picture>
+                )} */}
 
-                  <p className="text-slate-500">{el.description}</p>
+                <h3 className="line-clamp-1 text-[14px] leading-5">
+                  {el.title}
+                </h3>
 
-                  <span className="text-[10px] text-slate-700 uppercase self-end">
-                    {el.user.name}
-                  </span>
-                </Link>
-              </article>
-            ))}
-      </section>
+                <p className="line-clamp-3 text-slate-500">{el.description}</p>
+
+                <span className="text-[10px] text-slate-700 uppercase self-end">
+                  {el.name}
+                </span>
+              </Link>
+            </article>
+          ))}
+      </div>
     </aside>
   );
 }
