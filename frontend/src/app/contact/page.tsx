@@ -1,3 +1,4 @@
+import SectionCard from "@/components/home/SectionCard";
 import { getContact } from "@/services/projectService";
 
 export default async function ContactPage() {
@@ -12,21 +13,24 @@ export default async function ContactPage() {
     >
       <h1 className="text-3xl font-semibold text-white">Contacto</h1>
 
-      <div className="max-w-2xl rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-glow text-slate-300">
+      {/* <div className="max-w-2xl rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-glow text-slate-300"> */}
+      <SectionCard className="py-4! color-red">
         {contact ? (
-          <div className="space-y-3">
+          <div className="flex flex-col gap-2 text-sm">
             {contact.email ? (
               <p>
                 <span className="font-semibold text-white">Email:</span>{" "}
                 {contact.email}
               </p>
             ) : null}
+
             {contact.phone ? (
               <p>
                 <span className="font-semibold text-white">Teléfono:</span>{" "}
                 {contact.phone}
               </p>
             ) : null}
+
             {contact.linkedin ? (
               <p>
                 <span className="font-semibold text-white">LinkedIn:</span>{" "}
@@ -40,6 +44,7 @@ export default async function ContactPage() {
                 </a>
               </p>
             ) : null}
+
             {contact.github ? (
               <p>
                 <span className="font-semibold text-white">GitHub:</span>{" "}
@@ -57,7 +62,7 @@ export default async function ContactPage() {
         ) : (
           <p>No hay información de contacto disponible todavía.</p>
         )}
-      </div>
+      </SectionCard>
     </section>
   );
 }

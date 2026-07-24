@@ -17,6 +17,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "dev-to-uploads.s3.us-east-2.amazonaws.com",
       },
+      // 2. Placeholders
+      {
+        protocol: "https",
+        hostname: "cdn.pixabay.com",
+      },
       // 3. Current RSS Generic Servers
       {
         protocol: "https",
@@ -28,7 +33,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "**.contentstack.com",
+        hostname: "eu-images.contentstack.com",
       },
       {
         protocol: "https",

@@ -4,9 +4,13 @@ import ExternalLinkIcon from "../svg/ExternalLinkIcon";
 
 interface SectionCardProps {
   children: ReactNode;
+  className?: string;
 }
 
-export default function SectionCard({ children }: SectionCardProps) {
+export default function SectionCard({
+  children,
+  className = "",
+}: SectionCardProps) {
   return (
     <section
       className={[
@@ -17,6 +21,7 @@ export default function SectionCard({ children }: SectionCardProps) {
         "bg-zinc-900/50 hover:scale-[102%]",
         "transition-all duration-700 ease-out",
         "hover:bg-gradient-to-br from-white/[0.07] via-zinc-950/50 to-zinc-950/70",
+        className,
       ].join(" ")}
     >
       {children}

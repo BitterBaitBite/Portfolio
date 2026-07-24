@@ -65,6 +65,24 @@ export default async function HomePage() {
             icon={InternalLinkIcon}
           />
         </SectionCard>
+
+        <SectionCard>
+          <h2 className="text-xl text-slate-300 uppercase tracking-wider">
+            CV
+          </h2>
+
+          <p className="text-slate-500 text-sm mb-2">
+            Here you can see my work experience and education feats, as well as
+            some certifications. You can download a PDF version from here too,
+            in case you want to show it around.
+          </p>
+
+          <DynamicLinkButton
+            href="/projects"
+            text={"About me"}
+            icon={InternalLinkIcon}
+          />
+        </SectionCard>
       </div>
 
       {/* GITHUB */}

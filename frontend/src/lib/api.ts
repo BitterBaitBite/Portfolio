@@ -78,7 +78,12 @@ export async function getTechnicalFeed(rssUrl: string): Promise<NewsArticle[]> {
       `https://api.rss2json.com/v1/api.json?rss_url=${encodedUrl}`,
     );
 
-    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText} - ${errorBody}`,
+      );
+    }
 
     const data: RSS2JsonResponse = await response.json();
     return data.items.map<NewsArticle>((item) => ({

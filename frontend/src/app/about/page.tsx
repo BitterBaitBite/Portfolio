@@ -1,22 +1,10 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { getAbout } from "@/services/projectService";
 import { About } from "@/types";
 import { parseAboutSections } from "@/utils/aboutContent";
+import Image from "next/image";
 
-export default function AboutPage() {
-  const [about, setAbout] = useState<About | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getAbout()
-      .then(setAbout)
-      .catch((err) => setError(err.message))
-      .finally(() => setIsLoading(false));
-  }, []);
-
+export default async function AboutPage() {
+  const about: About | null = await getAbout();
   const sections = parseAboutSections(about?.body);
 
   return (
@@ -26,11 +14,7 @@ export default function AboutPage() {
         "px-4 py-2 sm:p-6 lg:p-8",
       ].join(" ")}
     >
-      {isLoading ? (
-        <p className="text-slate-300">Cargando contenido...</p>
-      ) : error ? (
-        <p className="text-red-400">{error}</p>
-      ) : about ? (
+      {about ? (
         <div className="text-slate-300 flex flex-col gap-6">
           <h1 className="text-3xl font-semibold text-slate-300">
             {about.title}
@@ -65,9 +49,11 @@ export default function AboutPage() {
                       ].join(" ")}
                     >
                       {section.imageUrl ? (
-                        <img
+                        <Image
                           src={section.imageUrl}
                           alt={section.title || "Imagen del bloque About"}
+                          width={720}
+                          height={720}
                           className="h-56 w-full rounded-md object-cover md:w-2/5"
                         />
                       ) : null}
@@ -93,7 +79,7 @@ export default function AboutPage() {
           ) : null}
         </div>
       ) : (
-        <p className="mt-4 text-slate-300">No hay información disponible.</p>
+        <p className="text-slate-300">Cargando contenido...</p>
       )}
     </section>
   );
