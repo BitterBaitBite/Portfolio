@@ -1,5 +1,4 @@
 import { API_BASE_URL } from "@/config/api";
-import { NewsArticle, RSS2JsonResponse } from "@/types";
 
 export function buildUrl(
   path: string,
@@ -69,35 +68,4 @@ export async function fetcher<T>(
   }
 
   return response.json();
-}
-
-export async function getTechnicalFeed(rssUrl: string): Promise<NewsArticle[]> {
-  try {
-    const encodedUrl = encodeURIComponent(rssUrl);
-    const response = await fetch(
-      `https://api.rss2json.com/v1/api.json?rss_url=${encodedUrl}`,
-    );
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(
-        `API request failed: ${response.status} ${response.statusText} - ${errorBody}`,
-      );
-    }
-
-    const data: RSS2JsonResponse = await response.json();
-    return data.items.map<NewsArticle>((item) => ({
-      id: item.guid,
-      title: item.title,
-      description:
-        item.description.replace(/<[^>]*>/g, "").substring(0, 90) + "...",
-      url: item.link,
-      name: item.author,
-      image: item.thumbnail || item.enclosure?.link || null,
-      date: new Date(item.pubDate).toLocaleDateString(),
-    }));
-  } catch (error) {
-    console.error(`Source: ${rssUrl}.\nError obtaining RSS data\n`, error);
-    return [];
-  }
 }

@@ -1,6 +1,6 @@
-import { buildExternalUrl, fetcher, getTechnicalFeed } from "@/lib/api";
+import { getRssFeed, getTechnicalFeed } from "@/lib/rss";
 import { NewsArticle } from "@/types";
 
 export async function getBleepingArticles(): Promise<NewsArticle[]> {
-  return getTechnicalFeed("https://www.bleepingcomputer.com/feed/");
+  return getRssFeed("https://www.bleepingcomputer.com/feed/");
 }

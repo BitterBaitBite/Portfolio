@@ -1,76 +1,123 @@
 import Parser from "rss-parser";
+import { NewsArticle, RSS2JsonResponse } from "@/types";
+import {
+  extract,
+  FeedData,
+  FeedEntry,
+  FetchOptions,
+} from "@extractus/feed-extractor";
 
-export interface NewsArticle {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  name: string;
-  image: string | null;
-  date: string;
-}
+type NextFetchOptions = FetchOptions & {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+};
 
-const parser = new Parser({
-  customFields: {
-    item: [
-      ["media:content", "mediaContent"],
-      ["enclosure", "enclosure"],
-    ],
-  },
-});
+type ExtraFieldsEntry = FeedEntry & {
+  author: string | null;
+  thumbnail: string | null;
+  "dc:creator": string | null;
+  content: string | null;
+};
 
-export async function getTechnicalFeed(rssUrl: string): Promise<NewsArticle[]> {
+export async function getRssFeed(rssUrl: string): Promise<NewsArticle[]> {
   try {
-    // 1. Petición HTTP usando la caché nativa de Next.js
-    // Revalida el feed cada 1 hora (3600 segundos) para no saturar la fuente
-    const response = await fetch(rssUrl, {
-      next: { revalidate: 3600 },
+    const fetchOptions: NextFetchOptions = {
+      next: { revalidate: 86400 },
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         Accept:
           "application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
       },
-    });
+    };
 
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${response.status} ${response.statusText}`,
-      );
+    const feed = await extract(
+      rssUrl,
+      {
+        normalization: true,
+        getExtraEntryFields: (feedEntry) => ({
+          author: feedEntry.author,
+          thumbnail: feedEntry.thumbnail,
+          "dc:creator": feedEntry["dc:creator"],
+          content: feedEntry.content,
+        }),
+      },
+      fetchOptions,
+    );
+
+    if (!feed || !Array.isArray(feed.entries)) {
+      return [];
     }
 
-    // 2. Obtener el XML puro en texto
-    const xmlText = await response.text();
+    return feed.entries.map<NewsArticle>((entry) => {
+      const completeEntry = entry as ExtraFieldsEntry;
 
-    // 3. Parsear el XML a JSON en el servidor
-    const feed = await parser.parseString(xmlText);
-
-    // 4. Mapear los artículos al tipo de datos exacto de tu aplicación
-    return (feed.items || []).map<NewsArticle>((item) => {
-      // Extraer descripción limpia sin etiquetas HTML
-      const rawDescription =
-        item.contentSnippet || item.content || item.summary || "";
+      const rawDescription = completeEntry.description || "";
       const cleanDescription =
-        rawDescription.replace(/<[^>]*>/g, "").substring(0, 90) + "...";
-      // Extraer imagen si existe en enclosure o mediaContent
-      const mediaUrl =
-        item.enclosure?.url ||
-        (item as Record<string, any>).mediaContent?.$.url ||
-        null;
+        rawDescription
+          .replace(/<[^>]*>/g, "")
+          .substring(0, 90)
+          .trim() + "...";
+
+      // Fecha formateada con fallback seguro
+      const formattedDate = completeEntry.published
+        ? new Date(completeEntry.published).toLocaleDateString()
+        : new Date().toLocaleDateString();
+
       return {
-        id: item.guid || item.link || Math.random().toString(),
-        title: item.title || "Sin título",
+        id: completeEntry.id || completeEntry.link || Math.random().toString(),
+        title: completeEntry.title || "",
         description: cleanDescription,
-        url: item.link || "#",
-        name: item.creator || item["dc:creator"] || "Redacción",
-        image: mediaUrl,
-        date: item.pubDate
-          ? new Date(item.pubDate).toLocaleDateString()
-          : new Date().toLocaleDateString(),
+        url: completeEntry.link || "#",
+        name: completeEntry.author || completeEntry["dc:creator"] || "",
+        image: completeEntry.thumbnail || null,
+        date: formattedDate,
       };
     });
   } catch (error) {
-    console.error(`Source: ${rssUrl}.\nError obtaining RSS data:\n`, error);
+    console.error(`Source: ${rssUrl}.\nError obtaining RSS data\n`, error);
+    return [];
+  }
+}
+
+export async function getTechnicalFeed(rssUrl: string): Promise<NewsArticle[]> {
+  try {
+    const encodedUrl = encodeURIComponent(rssUrl);
+    const response = await fetch(
+      `https://api.rss2json.com/v1/api.json?rss_url=${encodedUrl}`,
+      {
+        next: { revalidate: 86400 },
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText} - ${errorBody}`,
+      );
+    }
+
+    const data: RSS2JsonResponse = await response.json();
+    return data.items.map<NewsArticle>((item) => ({
+      id: item.guid,
+      title: item.title,
+      description:
+        item.description.replace(/<[^>]*>/g, "").substring(0, 90) + "...",
+      url: item.link,
+      name: item.author,
+      image: item.thumbnail || item.enclosure?.link || null,
+      date: new Date(item.pubDate).toLocaleDateString(),
+    }));
+  } catch (error) {
+    console.error(`Source: ${rssUrl}.\nError obtaining RSS data\n`, error);
     return [];
   }
 }
