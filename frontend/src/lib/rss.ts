@@ -61,7 +61,6 @@ export async function getRssFeed(rssUrl: string): Promise<NewsArticle[]> {
           .substring(0, 90)
           .trim() + "...";
 
-      // Fecha formateada con fallback seguro
       const formattedDate = completeEntry.published
         ? new Date(completeEntry.published).toLocaleDateString()
         : new Date().toLocaleDateString();
@@ -82,7 +81,7 @@ export async function getRssFeed(rssUrl: string): Promise<NewsArticle[]> {
   }
 }
 
-export async function getTechnicalFeed(rssUrl: string): Promise<NewsArticle[]> {
+export async function getRssFeedAPI(rssUrl: string): Promise<NewsArticle[]> {
   try {
     const encodedUrl = encodeURIComponent(rssUrl);
     const response = await fetch(

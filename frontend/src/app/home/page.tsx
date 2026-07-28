@@ -3,7 +3,10 @@ import GithubRepoCard from "@/components/github/GithubRepoCard";
 import NewsSection from "@/components/home/news/NewsSection";
 import SectionCard from "@/components/home/SectionCard";
 import InternalLinkIcon from "@/components/svg/InternalLinkIcon";
-import { getBleepingArticles } from "@/services/bleepingComputerService";
+import {
+  getBleepingArticles,
+  getBleepingArticlesAPI,
+} from "@/services/bleepingComputerService";
 import { ArticleState, getDevToArticles } from "@/services/devToService";
 import { getEightyLevelArticles } from "@/services/eightyLevelService";
 import { getGameDeveloperArticles } from "@/services/gameDeveloperService";
@@ -18,7 +21,11 @@ export default async function HomePage() {
     top: 15,
     state: ArticleState.RISING,
   });
-  const bleepingArticles = await getBleepingArticles();
+
+  let bleepingArticles = await getBleepingArticles();
+  if (bleepingArticles.length === 0)
+    bleepingArticles = await getBleepingArticlesAPI();
+
   const gameDeveloperArticles = await getGameDeveloperArticles();
   const eightyLevelArticles = await getEightyLevelArticles();
 
