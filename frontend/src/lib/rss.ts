@@ -6,6 +6,7 @@ import {
   FeedEntry,
   FetchOptions,
 } from "@extractus/feed-extractor";
+import { buildUrl, fetcher } from "./api";
 
 type NextFetchOptions = FetchOptions & {
   next?: {
@@ -20,6 +21,44 @@ type ExtraFieldsEntry = FeedEntry & {
   "dc:creator": string | null;
   content: string | null;
 };
+
+export async function getRssFeedAPI(rssUrl: string): Promise<NewsArticle[]> {
+  try {
+    const feed = await fetcher<FeedData>(buildUrl(rssUrl));
+
+    if (!feed || !Array.isArray(feed.entries)) {
+      return [];
+    }
+
+    return feed.entries.map<NewsArticle>((entry) => {
+      const completeEntry = entry as ExtraFieldsEntry;
+
+      const rawDescription = completeEntry.description || "";
+      const cleanDescription =
+        rawDescription
+          .replace(/<[^>]*>/g, "")
+          .substring(0, 90)
+          .trim() + "...";
+
+      const formattedDate = completeEntry.published
+        ? new Date(completeEntry.published).toLocaleDateString()
+        : new Date().toLocaleDateString();
+
+      return {
+        id: completeEntry.id || completeEntry.link || Math.random().toString(),
+        title: completeEntry.title || "",
+        description: cleanDescription,
+        url: completeEntry.link || "#",
+        name: completeEntry.author || completeEntry["dc:creator"] || "",
+        image: completeEntry.thumbnail || null,
+        date: formattedDate,
+      };
+    });
+  } catch (error) {
+    console.error(`Source: ${rssUrl}.\nError obtaining RSS data\n`, error);
+    return [];
+  }
+}
 
 export async function getRssFeed(rssUrl: string): Promise<NewsArticle[]> {
   try {
@@ -81,7 +120,7 @@ export async function getRssFeed(rssUrl: string): Promise<NewsArticle[]> {
   }
 }
 
-export async function getRssFeedAPI(rssUrl: string): Promise<NewsArticle[]> {
+export async function getRssParserFeed(rssUrl: string): Promise<NewsArticle[]> {
   try {
     const encodedUrl = encodeURIComponent(rssUrl);
     const response = await fetch(
@@ -115,6 +154,69 @@ export async function getRssFeedAPI(rssUrl: string): Promise<NewsArticle[]> {
       image: item.thumbnail || item.enclosure?.link || null,
       date: new Date(item.pubDate).toLocaleDateString(),
     }));
+  } catch (error) {
+    console.error(`Source: ${rssUrl}.\nError obtaining RSS data\n`, error);
+    return [];
+  }
+}
+
+export async function getRssFeedGoogle(rssUrl: string): Promise<NewsArticle[]> {
+  try {
+    const encodedUrl = encodeURIComponent(rssUrl);
+    const googleFeedUrl = `https://news.google.com/rss/search?q=${encodedUrl}`;
+
+    const fetchOptions: NextFetchOptions = {
+      next: { revalidate: 86400 },
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        Accept:
+          "application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8",
+      },
+    };
+
+    const feed = await extract(
+      googleFeedUrl,
+      {
+        normalization: true,
+        getExtraEntryFields: (feedEntry) => ({
+          author: feedEntry.author,
+          thumbnail: feedEntry.thumbnail,
+          "dc:creator": feedEntry["dc:creator"],
+          content: feedEntry.content,
+        }),
+      },
+      fetchOptions,
+    );
+
+    if (!feed || !Array.isArray(feed.entries)) {
+      return [];
+    }
+
+    return feed.entries.map<NewsArticle>((entry) => {
+      const completeEntry = entry as ExtraFieldsEntry;
+
+      const rawDescription = completeEntry.description || "";
+      const cleanDescription =
+        rawDescription
+          .replace(/<[^>]*>/g, "")
+          .substring(0, 90)
+          .trim() + "...";
+
+      const formattedDate = completeEntry.published
+        ? new Date(completeEntry.published).toLocaleDateString()
+        : new Date().toLocaleDateString();
+
+      return {
+        id: completeEntry.id || completeEntry.link || Math.random().toString(),
+        title: completeEntry.title || "",
+        description: cleanDescription,
+        url: completeEntry.link || "#",
+        name: completeEntry.author || completeEntry["dc:creator"] || "",
+        image: completeEntry.thumbnail || null,
+        date: formattedDate,
+      };
+    });
   } catch (error) {
     console.error(`Source: ${rssUrl}.\nError obtaining RSS data\n`, error);
     return [];

@@ -4,8 +4,8 @@ import NewsSection from "@/components/home/news/NewsSection";
 import SectionCard from "@/components/home/SectionCard";
 import InternalLinkIcon from "@/components/svg/InternalLinkIcon";
 import {
-  getBleepingArticles,
   getBleepingArticlesAPI,
+  getBleepingArticlesGoogle,
 } from "@/services/bleepingComputerService";
 import { ArticleState, getDevToArticles } from "@/services/devToService";
 import { getEightyLevelArticles } from "@/services/eightyLevelService";
@@ -22,9 +22,10 @@ export default async function HomePage() {
     state: ArticleState.RISING,
   });
 
-  let bleepingArticles = await getBleepingArticles();
-  if (bleepingArticles.length === 0)
-    bleepingArticles = await getBleepingArticlesAPI();
+  let bleepingArticles = await getBleepingArticlesAPI();
+  if (!bleepingArticles || bleepingArticles.length === 0) {
+    bleepingArticles = await getBleepingArticlesGoogle();
+  }
 
   const gameDeveloperArticles = await getGameDeveloperArticles();
   const eightyLevelArticles = await getEightyLevelArticles();

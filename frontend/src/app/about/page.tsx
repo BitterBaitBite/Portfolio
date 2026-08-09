@@ -25,7 +25,7 @@ export default async function AboutPage() {
           ) : null}
 
           {sections.length ? (
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col">
               {sections.map((section, index) => {
                 const isRightAligned = section.alignment === "right";
 

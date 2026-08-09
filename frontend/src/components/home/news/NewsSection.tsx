@@ -69,7 +69,7 @@ export default function NewsSection({
     <aside
       className={[
         "flex flex-col",
-        "w-1/4",
+        "w-full md:w-1/4 md:basis-1/4 md:max-w-1/4",
         "shadow-[3px_3px_0px_0px] shadow-zinc-400/15",
         "hover:shadow-[0]",
         "bg-zinc-900/50 hover:scale-[102%]",
